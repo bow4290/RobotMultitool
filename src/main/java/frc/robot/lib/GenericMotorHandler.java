@@ -1,5 +1,8 @@
 package frc.robot.lib;
 
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
@@ -34,6 +37,23 @@ public class GenericMotorHandler {
     TALON_FX,
     SPARK_MAX,
     SPARK_FLEX
+  } 
+
+  // Hopefully these work for error handling and in general
+  private void _setImplementation(double value, DoubleConsumer method){
+    try {
+      method.accept(value);
+    } catch (Exception exception) {
+      System.err.println(String.format("Error running _setImplementation with motor at ID: %", this.motorID));
+    }
+  }
+  private double _getImplementation(DoubleSupplier method){
+    try {
+      return method.getAsDouble();
+    } catch (Exception exception) {
+      System.err.println(String.format("Error running _getImplementation with motor at ID: %", this.motorID));
+      return 0.0;
+    }
   }
 
   /**
@@ -43,7 +63,7 @@ public class GenericMotorHandler {
    */
   public void setChosenMotor(MotorEnum motorEnumValue){
     this.chosenMotor = motorEnumValue;
-    System.out.println(String.format("chosenMotor set to %s", motorEnumValue.toString()));
+    System.out.println(String.format("chosenMotor at ID %d set to %s", this.motorID, this.chosenMotor.toString()));
   }
 
   /**
@@ -54,13 +74,13 @@ public class GenericMotorHandler {
   public void setPower(double powerPercentage){
     switch (chosenMotor){
       case TALON_FX:
-        this.motorTalonFX.set(powerPercentage);
+        _setImplementation(powerPercentage, this.motorTalonFX::set);
       
       case SPARK_MAX:
-        this.motorSparkMax.set(powerPercentage);
+        _setImplementation(powerPercentage, this.motorSparkMax::set);
 
       case SPARK_FLEX:
-        this.motorSparkFlex.set(powerPercentage);
+        _setImplementation(powerPercentage, this.motorSparkFlex::set);
 
       case NONE:
         System.err.println(String.format("You need to pick chosenMotor at ID: %d", this.motorID));
@@ -78,13 +98,13 @@ public class GenericMotorHandler {
   public double getPower(){
     switch (chosenMotor){
       case TALON_FX:
-        return this.motorTalonFX.get();
+        return _getImplementation(this.motorTalonFX::get);
       
       case SPARK_MAX:
-        return this.motorSparkMax.get();
+        return _getImplementation(this.motorTalonFX::get);
 
       case SPARK_FLEX:
-        return this.motorSparkFlex.get();
+        return _getImplementation(this.motorTalonFX::get);
       
       case NONE:
         return 0.0;
