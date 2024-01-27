@@ -39,7 +39,7 @@ public class MotorMan extends SubsystemBase{
         break;
       case 2:
         motor2 = genericMotorType;
-        break;
+        break;  
       case 3:
         motor3 = genericMotorType;
         break;
