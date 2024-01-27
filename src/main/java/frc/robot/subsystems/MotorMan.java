@@ -53,7 +53,8 @@ public class MotorMan extends SubsystemBase{
   }
 
   // - Commands -
-  public Command cmdQuickSet(GenericMotor motorObject){
+  public Command cmdQuickSet(int motorID){
+    GenericMotor motorObject = getMotor(motorID);
     limitedQuickMotorSpeed = getQuickMotorSpeed();
 
     if (limitedQuickMotorSpeed > 1.0){
@@ -64,16 +65,20 @@ public class MotorMan extends SubsystemBase{
 
     return this.runEnd(() ->{
       motorObject.setSpeed(limitedQuickMotorSpeed);
+      System.out.println("QUICK SET RUN END RUNNING");
     }, () -> {
       motorObject.setSpeed(0);
+      System.out.println("QUICK SET RUN END ENDING");
     });
   }
 
   public Command cmdSetCurrentMotor(double speed){
     return this.runEnd(() -> {
       getMotor(chooserMotor.getSelected()).setSpeed(speed);
+      System.out.println("COMMAND SET RUN END RUNNING");
     }, () -> {
-      getMotor(chooserMotor.getSelected()).setSpeed(speed);
+      getMotor(chooserMotor.getSelected()).setSpeed(0);
+      System.out.println("COMMAND SET RUN END ENDING");
     });
   }
 
