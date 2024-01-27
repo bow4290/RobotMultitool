@@ -1,6 +1,7 @@
 package frc.robot;
 
-
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class Controls {
   public static void controlsConfig(RobotContainer bot){
@@ -13,6 +14,10 @@ public class Controls {
     // Runs the set motor to speed (based on power of triggers)
     bot.controller.rightTriggerB.onTrue(bot.motorMan.cmdSetCurrentMotor(bot.controller.rightTrigger.getAsDouble()));
     bot.controller.leftTriggerB.onTrue(bot.motorMan.cmdSetCurrentMotor(-bot.controller.leftTrigger.getAsDouble()));
+
+    bot.controller.bottomMiddle.onTrue(Commands.runOnce(() -> {
+      bot.motorMan.refreshMotorTypes();
+    }));
   }
   
 }
