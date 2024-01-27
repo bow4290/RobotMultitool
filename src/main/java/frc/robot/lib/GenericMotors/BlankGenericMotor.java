@@ -15,7 +15,6 @@ public class BlankGenericMotor implements GenericMotor {
 
   @Override
   public double getSpeed() {
-    System.out.printf("Blank Motor at ID %d: getSpeed (cannot store data, returning 0)", this.motorID);
     return 0;
   }
 
@@ -26,7 +25,6 @@ public class BlankGenericMotor implements GenericMotor {
 
   @Override
   public boolean getInverted() {
-    System.out.printf("Blank Motor at ID %d: getInverted (cannot store data, returning false)", this.motorID);
     return false;
   }
   

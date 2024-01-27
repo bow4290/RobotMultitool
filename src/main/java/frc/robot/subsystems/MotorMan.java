@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.lib.MotorTypeChooserTemplate;
 import frc.robot.lib.GenericMotors.BlankGenericMotor;
 import frc.robot.lib.GenericMotors.GenericMotor;
 import frc.robot.lib.GenericMotors.GenericSparkMax;
@@ -15,14 +16,11 @@ import frc.robot.lib.GenericMotors.GenericTalonFX;
  * The pseudo-subsystem used for handling / running motors. 
  */
 public class MotorMan extends SubsystemBase{
-
-  
-  SendableChooser<MotorEnum> _chooserTemplate = new SendableChooser<>();
   
   double limitedQuickMotorSpeed = 0;
   
   public GenericMotor motor1, motor2, motor3, motor4;
-  SendableChooser<MotorEnum> chooserTypeMotor1, chooserTypeMotor2, chooserTypeMotor3, chooserTypeMotor4;
+  SendableChooser<MotorEnum> chooserTypeMotor1, chooserTypeMotor2, chooserTypeMotor3, chooserTypeMotor4 = new SendableChooser<>();
   SendableChooser<GenericMotor> chooserMotor;
   
 
@@ -88,14 +86,11 @@ public class MotorMan extends SubsystemBase{
    * Sets up all the SendableChooser instances. Should be ran once at robot initialization.
    */
   public void chooserConfig(){
-    _chooserTemplate.setDefaultOption("None", MotorEnum.None);
-    _chooserTemplate.addOption("TalonFX", MotorEnum.TalonFX);
-    _chooserTemplate.addOption("SparkMax", MotorEnum.SparkMax);
 
-    chooserTypeMotor1 = _chooserTemplate;
-    chooserTypeMotor2 = _chooserTemplate;
-    chooserTypeMotor3 = _chooserTemplate;
-    chooserTypeMotor4 = _chooserTemplate;
+    chooserTypeMotor1 = new MotorTypeChooserTemplate();
+    chooserTypeMotor2 = new MotorTypeChooserTemplate();
+    chooserTypeMotor3 = new MotorTypeChooserTemplate();
+    chooserTypeMotor4 = new MotorTypeChooserTemplate();
 
     chooserMotor = new SendableChooser<>();
     chooserMotor.setDefaultOption("Motor 1", motor1);
