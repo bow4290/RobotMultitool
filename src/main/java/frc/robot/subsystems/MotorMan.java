@@ -102,6 +102,8 @@ public class MotorMan extends SubsystemBase{
     SmartDashboard.putData("Motor 2 Type", chooserTypeMotor2);
     SmartDashboard.putData("Motor 3 Type", chooserTypeMotor3);
     SmartDashboard.putData("Motor 4 Type", chooserTypeMotor4);
+
+    SmartDashboard.putData("Quickset Motor", chooserMotor);
   }
   
   /**
