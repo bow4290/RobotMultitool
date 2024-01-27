@@ -17,7 +17,7 @@ public class MotorMan extends SubsystemBase{
 
   SendableChooser<MotorEnum> _chooserTemplate = new SendableChooser<>();
   
-  GenericMotor motor1, motor2, motor3, motor4;
+  public GenericMotor motor1, motor2, motor3, motor4;
   SendableChooser<MotorEnum> chooserTypeMotor1, chooserTypeMotor2, chooserTypeMotor3, chooserTypeMotor4;
   
 
@@ -108,6 +108,10 @@ public class MotorMan extends SubsystemBase{
     setMotorType(4, chooserTypeMotor4.getSelected());
   }
 
+  public double getQuickMotorSpeed(){
+    return SmartDashboard.getNumber("Quick Set Motor Speed", 0);
+  }
+
 
 
   @Override
@@ -117,5 +121,7 @@ public class MotorMan extends SubsystemBase{
     SmartDashboard.putNumber("Motor 2 Current Speed", motor2.getSpeed());
     SmartDashboard.putNumber("Motor 3 Current Speed", motor3.getSpeed());
     SmartDashboard.putNumber("Motor 4 Current Speed", motor4.getSpeed());
+
+    SmartDashboard.putNumber("Quick Set Motor Speed", 0);
   }
 }
