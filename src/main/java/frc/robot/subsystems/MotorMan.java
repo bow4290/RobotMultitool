@@ -16,9 +16,10 @@ import frc.robot.lib.GenericMotors.GenericTalonFX;
  */
 public class MotorMan extends SubsystemBase{
 
-  double limitedQuickMotorSpeed = 0;
-
+  
   SendableChooser<MotorEnum> _chooserTemplate = new SendableChooser<>();
+  
+  double limitedQuickMotorSpeed = 0;
   
   public GenericMotor motor1, motor2, motor3, motor4;
   SendableChooser<MotorEnum> chooserTypeMotor1, chooserTypeMotor2, chooserTypeMotor3, chooserTypeMotor4;
@@ -136,6 +137,14 @@ public class MotorMan extends SubsystemBase{
       motorObject.setSpeed(limitedQuickMotorSpeed);
     }, () -> {
       motorObject.setSpeed(0);
+    });
+  }
+
+  public Command cmdSetCurrentMotor(double speed){
+    return this.runEnd(() -> {
+      chooserMotor.getSelected().setSpeed(speed);
+    }, () -> {
+      chooserMotor.getSelected().setSpeed(0);
     });
   }
 
