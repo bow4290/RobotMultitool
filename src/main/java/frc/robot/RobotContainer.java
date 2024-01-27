@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
+import frc.robot.lib.GenericGamepad;
 import frc.robot.subsystems.MotorMan;
 
 
@@ -14,11 +15,12 @@ import frc.robot.subsystems.MotorMan;
  */
 public class RobotContainer {
   public final MotorMan motorMan = new MotorMan();
+  public final GenericGamepad controller = GenericGamepad.from(0);
 
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-
+    motorMan.chooserConfig();
+    Controls.controlsConfig(this);
   }
 }
