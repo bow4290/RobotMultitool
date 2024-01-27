@@ -17,7 +17,7 @@ import frc.robot.lib.GenericMotors.GenericTalonFX;
  */
 public class MotorMan extends SubsystemBase{
   
-  double limitedQuickMotorSpeed = 0;
+  double quickSetMotorSpeed = 0;
   
   SendableChooser<Integer> chooserMotor;
   SendableChooser<MotorEnum> chooserTypeMotor1, chooserTypeMotor2, chooserTypeMotor3, chooserTypeMotor4 = new SendableChooser<>();
@@ -48,37 +48,23 @@ public class MotorMan extends SubsystemBase{
     SmartDashboard.putData("Motor 4 Type", chooserTypeMotor4);
 
     SmartDashboard.putData("Current Set Motor", chooserMotor);
-
-    SmartDashboard.putNumber("Quick Set Motor Speed", 0);
   }
 
   // - Commands -
   public Command cmdQuickSet(int motorID){
-    GenericMotor motorObject = getMotor(motorID);
-    limitedQuickMotorSpeed = getQuickMotorSpeed();
-
-    if (limitedQuickMotorSpeed > 1.0){
-      limitedQuickMotorSpeed = 1.0;
-    } else if (limitedQuickMotorSpeed < -1.0){
-      limitedQuickMotorSpeed = -1.0;
-    }
 
     return this.runEnd(() ->{
-      motorObject.setSpeed(limitedQuickMotorSpeed);
-      System.out.println("QUICK SET RUN END RUNNING");
+      getMotor(motorID).setSpeed(getQuickMotorSpeed());
     }, () -> {
-      motorObject.setSpeed(0);
-      System.out.println("QUICK SET RUN END ENDING");
+      getMotor(motorID).setSpeed(0);
     });
   }
 
   public Command cmdSetCurrentMotor(double speed){
     return this.runEnd(() -> {
       getMotor(chooserMotor.getSelected()).setSpeed(speed);
-      System.out.println("COMMAND SET RUN END RUNNING");
     }, () -> {
       getMotor(chooserMotor.getSelected()).setSpeed(0);
-      System.out.println("COMMAND SET RUN END ENDING");
     });
   }
 
@@ -153,10 +139,25 @@ public class MotorMan extends SubsystemBase{
     }
   }
 
-  private double getQuickMotorSpeed(){
-
-    return SmartDashboard.getNumber("Quick Set Motor Speed", 0);
+  public void incrementQuickMotorSpeed(){
+    if (quickSetMotorSpeed >= 1){
+    }else{
+      quickSetMotorSpeed += 0.05;
+    }
   }
+
+  public void decrementQuickMotorSpeed(){
+    if (quickSetMotorSpeed <= 0){
+    }else {
+      quickSetMotorSpeed -= 0.05;
+    }
+
+  }
+
+  private double getQuickMotorSpeed(){
+    return quickSetMotorSpeed;
+  }
+
 
   /**
    * The helper function for handling setting motor type, based on ID. This is not meant to be called directly, instead use {@link #setMotorType(int, MotorEnum) motorSwitch()}
@@ -193,5 +194,6 @@ public class MotorMan extends SubsystemBase{
     SmartDashboard.putNumber("Motor 2 Current Speed", getMotor(2).getSpeed());
     SmartDashboard.putNumber("Motor 3 Current Speed", getMotor(3).getSpeed());
     SmartDashboard.putNumber("Motor 4 Current Speed", getMotor(4).getSpeed());
+    SmartDashboard.putNumber("Quickset Motor Speed", getQuickMotorSpeed());
   }
 }
