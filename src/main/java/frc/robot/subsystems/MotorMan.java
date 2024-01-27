@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.lib.GenericMotors.BlankGenericMotor;
 import frc.robot.lib.GenericMotors.GenericMotor;
@@ -15,10 +16,13 @@ import frc.robot.lib.GenericMotors.GenericTalonFX;
  */
 public class MotorMan extends SubsystemBase{
 
+  double limitedQuickMotorSpeed = 0;
+
   SendableChooser<MotorEnum> _chooserTemplate = new SendableChooser<>();
   
   public GenericMotor motor1, motor2, motor3, motor4;
   SendableChooser<MotorEnum> chooserTypeMotor1, chooserTypeMotor2, chooserTypeMotor3, chooserTypeMotor4;
+  SendableChooser<GenericMotor> chooserMotor;
   
 
   public enum MotorEnum{
@@ -92,6 +96,12 @@ public class MotorMan extends SubsystemBase{
     chooserTypeMotor3 = _chooserTemplate;
     chooserTypeMotor4 = _chooserTemplate;
 
+    chooserMotor = new SendableChooser<>();
+    chooserMotor.setDefaultOption("Motor 1", motor1);
+    chooserMotor.addOption("Motor 2", motor2);
+    chooserMotor.addOption("Motor 3", motor3);
+    chooserMotor.addOption("Motor 4", motor4);
+
     SmartDashboard.putData("Motor 1 Type", chooserTypeMotor1);
     SmartDashboard.putData("Motor 2 Type", chooserTypeMotor2);
     SmartDashboard.putData("Motor 3 Type", chooserTypeMotor3);
@@ -112,6 +122,22 @@ public class MotorMan extends SubsystemBase{
     return SmartDashboard.getNumber("Quick Set Motor Speed", 0);
   }
 
+  // Commands
+  public Command cmdQuickSet(GenericMotor motorObject){
+    limitedQuickMotorSpeed = getQuickMotorSpeed();
+
+    if (limitedQuickMotorSpeed > 1.0){
+      limitedQuickMotorSpeed = 1.0;
+    } else if (limitedQuickMotorSpeed < -1.0){
+      limitedQuickMotorSpeed = -1.0;
+    }
+
+    return this.runEnd(() ->{
+      motorObject.setSpeed(limitedQuickMotorSpeed);
+    }, () -> {
+      motorObject.setSpeed(0);
+    });
+  }
 
 
   @Override
