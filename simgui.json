@@ -1,4 +1,14 @@
 {
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Current Set Motor": "String Chooser",
+      "/SmartDashboard/Motor 1 Type": "String Chooser",
+      "/SmartDashboard/Motor 2 Type": "String Chooser",
+      "/SmartDashboard/Motor 3 Type": "String Chooser",
+      "/SmartDashboard/Motor 4 Type": "String Chooser"
+    }
+  },
   "NetworkTables Info": {
     "visible": true
   }
